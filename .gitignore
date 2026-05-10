@@ -1,10 +1,24 @@
+# Pastas de compilação e dependências 
 /_build
-/cover
 /deps
-/doc
+
+# Arquivo de persistência local 
+/favoritos.json
+
+# Cache do VS Code e ferramentas de Elixir
+/.elixir_ls/
 /.fetch
 erl_crash.dump
 *.ez
 *.beam
+
+# Documentação e Cobertura 
+/doc
+/cover
+
+# Configurações sensíveis 
 /config/*.secret.exs
-.elixir_ls/
+
+# Arquivos de sistema 
+.DS_Store
+Thumbs.db
