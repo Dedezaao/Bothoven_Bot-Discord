@@ -1,10 +1,10 @@
-defmodule BeethovenBot.Commands do
+defmodule BeethovenBot.Commands.Musica do
 
   @doc """
   Implementação de comandos para o Bothoven.
   Focado em funções puras e transformações com Pipe Operator.
   """
-  @itunes_api_url "https://itunes.apple.com/search?term=classic&limit=20"
+  @itunes_api_url "https://itunes.apple.com/search?term=pop&media=music&entity=song&limit=50"
 
   def musica_aleatoria do
     case HTTPoison.get(@itunes_api_url) do
