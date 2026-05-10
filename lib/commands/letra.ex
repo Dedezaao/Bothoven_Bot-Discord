@@ -13,7 +13,7 @@ defmodule BeethovenBot.Commands.Letra do
     end
   end
 
-  def fazer_requisicao(artista, musica) do
+  defp fazer_requisicao(artista, musica) do
     url = "https://api.lyrics.ovh/v1/#{URI.encode(artista)}/#{URI.encode(musica)}"
 
     case HTTPoison.get(url) do
