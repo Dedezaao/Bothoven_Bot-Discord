@@ -1,59 +1,92 @@
 ![alt text](image/Bothoven Faixa.png)
 
-# Bothoven 🎼
+# Maestro Bothoven 🎼
 
-O **BeethovenBot** é um assistente musical para Discord desenvolvido como projeto da disciplina de **Programação Funcional**. O bot combina uma estética *Synthwave/Cyberpunk* com o poder do Elixir para oferecer consultas a APIs musicais e gestão de acervo pessoal.
+O **Maestro Bothoven** é um assistente musical para Discord desenvolvido como projeto final da disciplina de **Programação Funcional** (UNIFOR). O bot combina uma estética *Synthwave/Cyberpunk* com o poder do Elixir para oferecer consultas a APIs musicais e gestão de acervo pessoal.
+
+---
+
+### NOTA PARA A AVALIAÇÃO (AV2)
+
+> **Professor**, ao iniciar o bot, utilize o comando `!prova`.
+> Ele exibirá um card de auditoria que mapeia cada comando realizado às 7 APIs REST distintas exigidas, demonstrando o cumprimento de todos os requisitos de parâmetros e encadeamento solicitados no PDF.
+
+---
 
 ## Tecnologias Utilizadas
 
-* **Elixir 1.19+**: Linguagem funcional com foco em concorrência e resiliência.
+* **Elixir 1.19+**: Linguagem funcional com foco em concorrência, imutabilidade e resiliência.
 * **Nostrum**: Framework para integração com a API do Discord.
 * **HTTPoison**: Cliente HTTP para consumo de APIs REST.
 * **Jason**: Serialização e desserialização de dados JSON.
 
 ## Arquitetura do Projeto
 
-Seguindo os princípios de responsabilidade única e imutabilidade:
+A estrutura segue o princípio de responsabilidade única e modularização:
 
-* `BeethovenBot.Application`: Supervisor da árvore de processos (OTP).
-* `BeethovenBot.Consumer`: Handler central que realiza o despacho de comandos via **Pattern Matching**.
-* `BeethovenBot.Store`: Módulo de persistência que gerencia o arquivo `favoritos.json`.
-* `BeethovenBot.Commands.*`: Módulos especializados para cada comando (`Bio`, `Cantar`, `Top`, etc).
+```text
+beethoven_bot/
+├── config/             # Configurações e Tokens (Variáveis de Ambiente)
+├── lib/
+│   ├── commands/       # Módulos especializados das 7 APIs + Extras
+│   ├── consumer.ex     # Cérebro do Bot (Dispatcher via Pattern Matching)
+│   └── store.ex        # Lógica de Persistência (Interface com o JSON)
+├── favoritos.json      # Banco de Dados Local (Persistência)
+└── mix.exs             # Gerenciador de Dependências
+```
 
 ## Configuração e Execução
 
 ### 1. Variáveis de Ambiente
 
-Para segurança, o projeto não contém tokens expostos no código. Configure-os no seu terminal antes de iniciar:
+Para garantir a segurança, o projeto não possui credenciais no código-fonte. Configure as variáveis de ambiente no seu terminal (PowerShell) antes de iniciar a aplicação:
 
 ```powershell
-# No PowerShell
-$env:DISCORD_TOKEN="SEU_TOKEN_DO_DISCORD"
-$env:LASTFM_TOKEN="SUA_CHAVE_DA_LASTFM"
+$env:DISCORD_TOKEN="SEU_TOKEN_AQUI"
+$env:LASTFM_TOKEN="SUA_CHAVE_AQUI"
 ```
 
-### 2. Executando o Bot
+### 2. Iniciar o Maestro
 
-```
+Com as variáveis carregadas, instale as dependências e inicie o bot no modo interativo:
+
+```bash
 # Instalar dependências
 mix deps.get
 
-# Iniciar o Maestro
+# Iniciar o bot 
 iex.bat -S mix
 ```
 
-## Comandos Disponíveis
+## Acervo de Comandos
+
+Todos os comandos foram projetados para tratar falhas de rede de forma resiliente e retornar cards visuais customizados (Embeds).
+
+### 📋 Oficiais da Avaliação (As 7 APIs)
 
 
-| **Comando**     | **Descrição**                                            | **Exemplo de Uso**                    |
-| --------------- | ---------------------------------------------------------- | ------------------------------------- |
-| `!help`         | Exibe o guia visual com todos os comandos.                 | `!help`                               |
-| `!musica`       | Sugere um hit pop aleatório (iTunes API).                 | `!musica`                             |
-| `!letra`        | Busca a letra de uma música (Lyrics.ovh).                 | `!letra Skank - Vamos Fugir`          |
-| `!bio`          | Biografia e foto do artista (Last.fm API).                 | `!bio Post Malone`                    |
-| `!top`          | Lista o ranking das 5 mais ouvidas por região e ritmo.    | `!top Brasil - Forró`                |
-| `!comparar`     | Batalha de ouvintes entre dois artistas (**with**).        | `!comparar Queen x Beatles`           |
-| `!cantar`       | **[API Mista]**Une letra, capa do álbum e link de áudio. | `!cantar Bob Marley - Is This Love`   |
-| `!favoritar`    | Salva uma música no seu acervo pessoal (**JSON**).        | `!favoritar Mágica - Calcinha Preta` |
-| `!favoritos`    | Lista todas as músicas salvas no seu arquivo local.       | `!favoritos`                          |
-| `!desfavoritar` | Remove uma música específica do seu acervo JSON.         | `!desfavoritar Mágica`               |
+| Comando         | API Utilizada        | Tipo          | Descrição                                            | Exemplo de Uso                        |
+| :-------------- | :------------------- | :------------ | :----------------------------------------------------- | :------------------------------------ |
+| `!prova`        | **-**                | **Especial**  | **Valida e lista todos os requisitos da prova.**       | `!prova`                              |
+| `!musica`       | **iTunes**           | 0 Params      | Sugere um hit pop aleatório.                          | `!musica`                             |
+| `!bio`          | **Wikipedia**        | 1 Param       | Resumo biográfico dinâmico do artista.               | `!bio Post Malone`                    |
+| `!hit`          | **Deezer**           | 1 Param       | Busca o sucesso nº 1 do artista no ranking.           | `!hit The Weeknd`                     |
+| `!letra`        | **Lyrics.ovh**       | 2 Params      | Busca a letra da canção informada.                   | `!letra Skank - Vamos Fugir`          |
+| `!comparar`     | **Last.fm**          | 2 Params      | Batalha de estatísticas de ouvintes.                  | `!comparar Queen x Beatles`           |
+| `!filosofia`    | **Kanye + MyMemory** | **Mista**     | **Encadeamento:** Gera citação e traduz o resultado. | `!filosofia`                          |
+| `!favoritar`    | **JSON Local**       | Persistência | Salva uma música no`favoritos.json`.                  | `!favoritar Mágica - Calcinha Preta` |
+| `!favoritos`    | **JSON Local**       | Persistência | Lista todas as músicas do seu acervo.                 | `!favoritos`                          |
+| `!desfavoritar` | **JSON Local**       | Persistência | Remove uma música do seu acervo.                      | `!desfavoritar Mágica`               |
+
+### 🌟 Funcionalidades Extras (Bônus)
+
+
+| Comando   | Descrição                                             | Exemplo de Uso                      |
+| :-------- | :------------------------------------------------------ | :---------------------------------- |
+| `!help`   | Exibe o guia visual completo do Bothoven.               | `!help`                             |
+| `!top`    | Lista o ranking das 5 mais ouvidas por região e ritmo. | `!top Brasil - Forró`              |
+| `!cantar` | Une a letra com a capa do álbum e prévia de áudio.   | `!cantar Bob Marley - Is This Love` |
+
+---
+
+**Desenvolvido por Ricardo André Rodrigues Bandeira**

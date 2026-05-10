@@ -15,6 +15,8 @@ defmodule BeethovenBot.Consumer do
     args = msg.content |> String.trim() |> String.split(" ")
 
     case args do
+      ["!prova"] -> Message.create(msg.channel_id, Commands.Prova.relatorio())
+
       ["!musica"] -> Message.create(msg.channel_id, Commands.Musica.musica_aleatoria())
 
       ["!letra" | resto] -> Message.create(msg.channel_id, Commands.Letra.buscar_letra(resto))
@@ -33,6 +35,10 @@ defmodule BeethovenBot.Consumer do
 
       ["!help"] -> Message.create(msg.channel_id, Commands.Help.exibir())
       ["!ajuda"] -> Message.create(msg.channel_id, Commands.Help.exibir())
+
+      ["!hit" | artista] -> Message.create(msg.channel_id, Commands.Hit.executar(artista))
+
+      ["!filosofia"] -> Message.create(msg.channel_id, Commands.Filosofia.executar(args))
       _ -> :ignore
     end
 
