@@ -8,6 +8,7 @@ defmodule BeethovenBot.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      BeethovenBot.Consumer
       # Starts a worker by calling: BeethovenBot.Worker.start_link(arg)
       # {BeethovenBot.Worker, arg}
     ]
