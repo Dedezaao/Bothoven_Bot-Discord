@@ -77,7 +77,7 @@ defmodule BeethovenBot.Commands.Filosofia do
       **Original (EN):**
       🗣️ _"#{en}"_
       """)
-      |> Embed.put_color(0xFFD700)
+      |> Embed.put_color(0x9D00FF)
       |> Embed.put_image(@imagem_bothoven_filosofia)
 
     [embed: embed]

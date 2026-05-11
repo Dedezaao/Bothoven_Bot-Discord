@@ -45,7 +45,7 @@ defmodule BeethovenBot.Commands.Hit do
       🎧 **[Ouvir no Deezer](#{link_ouvou})** | **[Prévia](#{preview})**
       """)
       |> Embed.put_thumbnail(capa)
-      |> Embed.put_color(0x00FF9D)
+      |> Embed.put_color(0x9D00FF)
 
     [embed: embed]
   end
