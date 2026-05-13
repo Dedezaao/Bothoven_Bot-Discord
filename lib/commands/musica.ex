@@ -1,9 +1,7 @@
 defmodule BeethovenBot.Commands.Musica do
 
-  @doc """
-  Implementação de comandos para o Bothoven.
-  Focado em funções puras e transformações com Pipe Operator.
-  """
+  alias Nostrum.Struct.Embed
+
   @itunes_api_url "https://itunes.apple.com/search?term=pop&media=music&entity=song&limit=50"
 
   def musica_aleatoria do
@@ -12,18 +10,24 @@ defmodule BeethovenBot.Commands.Musica do
         body
         |> Jason.decode!()
         |> Map.get("results")
-        |> Enum.random() # Requisito: Manipulação com Enum [cite: 204]
-        |> formatar_musica()
+        |> Enum.random()
+        |> formar_embed()
 
       {:error, _} -> "🎹 Beethoven perdeu a batuta... tente novamente!"
     end
   end
 
-  defp formatar_musica(track) do
-    "🎼 **Sugestão do Maestro:** _#{track["trackName"]}_ de **#{track["artistName"]}**"
+
+  defp formar_embed(track) do
+    embed =
+      %Embed{}
+      |> Embed.put_title("Receba essa Pedrada Musical!")
+      |> Embed.put_description("🎼 **#{track["trackName"]}** de **#{track["artistName"]}**")
+      |> Embed.put_color(0x9D00FF)
+      |> Embed.put_image(@imagem_bothoven_filosofia)
+
+    [embed: embed]
   end
-
-
 
 
 end

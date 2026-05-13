@@ -20,7 +20,7 @@ defmodule BeethovenBot.Commands.Filosofia do
   defp buscar_sabedoria do
     case buscar_citação_kanye() do
       {:ok, frase} when is_binary(frase) -> {:ok, frase}
-      _ -> buscar_conselho_reserva() # Vai pro plano B se o Kanye falhar
+      _ -> buscar_conselho_reserva()
     end
   end
 
@@ -28,7 +28,6 @@ defmodule BeethovenBot.Commands.Filosofia do
     url = "https://api.kanye.rest/"
     case HTTPoison.get(url) do
       {:ok, %{status_code: 200, body: body}} ->
-        # Sem exclamação para não crashar se vier lixo da internet
         case Jason.decode(body) do
           {:ok, %{"quote" => quote}} when is_binary(quote) -> {:ok, quote}
           _ -> {:error, "Kanye enviou um formato inválido"}
